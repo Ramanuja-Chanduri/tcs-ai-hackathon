@@ -12,18 +12,23 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.tools import DuckDuckGoSearchResults
 
 # ---------------------------------------------------------------------------
-# Clients (initialised at module level, lazily use OPENAI_API_KEY from env)
+# Clients (initialised at module level, using GENAILAB_API_KEY from env)
 # ---------------------------------------------------------------------------
 
+_API_KEY = os.environ.get("GENAILAB_API_KEY")
+_BASE_URL = "https://genailab.tcs.in"
+
 llm = ChatOpenAI(
-    model="gpt-4o-mini",
+    model="azure_ai/genailab-maas-Llama-4-Maverick-17B-128E-Instruct-FP8",
     temperature=0.3,
-    api_key=os.environ.get("OPENAI_API_KEY"),
+    base_url=_BASE_URL,
+    api_key=_API_KEY,
 )
 
 embeddings_model = OpenAIEmbeddings(
-    model="text-embedding-3-small",
-    api_key=os.environ.get("OPENAI_API_KEY"),
+    model="azure/genailab-maas-text-embedding-3-large",
+    base_url=_BASE_URL,
+    api_key=_API_KEY,
 )
 
 search_tool = DuckDuckGoSearchResults(max_results=5)
