@@ -14,10 +14,6 @@ from src.database import store_summary
 from src.llm_client import call_llm
 
 
-# ---------------------------------------------------------------------------
-# Context builders
-# ---------------------------------------------------------------------------
-
 def _build_overall_context(
     trades: List[Dict[str, Any]],
     state: dict,
@@ -65,10 +61,6 @@ def _build_overall_context(
     }
 
 
-# ---------------------------------------------------------------------------
-# Pipeline node
-# ---------------------------------------------------------------------------
-
 def generate_summaries_node(state: dict) -> dict:
     """LangGraph pipeline node that generates AI-powered trade summaries.
 
@@ -93,9 +85,6 @@ def generate_summaries_node(state: dict) -> dict:
     ticker_enrichment: Dict[str, Any] = state.get("ticker_enrichment_json", {})
     domain_enrichment: Dict[str, Any] = state.get("domain_enrichment_json", {})
 
-    # ------------------------------------------------------------------
-    # A) Overall summary
-    # ------------------------------------------------------------------
     overall_context = _build_overall_context(trades, state)
 
     overall_system = "You are a senior financial analyst."
@@ -115,9 +104,6 @@ def generate_summaries_node(state: dict) -> dict:
     overall_summary = call_llm(overall_prompt, system_prompt=overall_system)
     store_summary(session_id, "overall", overall_summary)
 
-    # ------------------------------------------------------------------
-    # B) Per-ticker summaries
-    # ------------------------------------------------------------------
     # Group trades by ticker
     ticker_trades: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for t in trades:
@@ -146,9 +132,6 @@ def generate_summaries_node(state: dict) -> dict:
         ticker_summaries[ticker] = summary
         store_summary(session_id, "ticker", summary, reference_id=ticker)
 
-    # ------------------------------------------------------------------
-    # C) Per-domain summaries
-    # ------------------------------------------------------------------
     # Group trades by domain
     domain_trades: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for t in trades:

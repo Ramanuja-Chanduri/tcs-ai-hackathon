@@ -27,27 +27,15 @@ app = FastAPI(title="TradeSummaryAI", version="1.0.0")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-# ---------------------------------------------------------------------------
-# Startup
-# ---------------------------------------------------------------------------
-
 @app.on_event("startup")
 async def startup() -> None:
     init_db()
 
 
-# ---------------------------------------------------------------------------
-# Root
-# ---------------------------------------------------------------------------
-
 @app.get("/")
 async def root():
     return FileResponse("static/index.html")
 
-
-# ---------------------------------------------------------------------------
-# Upload
-# ---------------------------------------------------------------------------
 
 @app.post("/api/upload", response_model=UploadResponse)
 async def upload(file: UploadFile = File(...)):
@@ -68,10 +56,6 @@ async def upload(file: UploadFile = File(...)):
         domains=result["domains"],
     )
 
-
-# ---------------------------------------------------------------------------
-# Summaries
-# ---------------------------------------------------------------------------
 
 @app.get("/api/summary/overall/{session_id}", response_model=SummaryResponse)
 async def summary_overall(session_id: str):
@@ -109,9 +93,6 @@ async def summary_domain(session_id: str, domain: str):
     )
 
 
-# ---------------------------------------------------------------------------
-# Metrics
-# ---------------------------------------------------------------------------
 
 @app.get("/api/metrics/{session_id}", response_model=MetricsResponse)
 async def metrics(session_id: str):
@@ -120,10 +101,6 @@ async def metrics(session_id: str):
         metrics=[MetricItem(**r) for r in rows],
     )
 
-
-# ---------------------------------------------------------------------------
-# Tickers & Domains
-# ---------------------------------------------------------------------------
 
 @app.get("/api/tickers/{session_id}", response_model=TickersResponse)
 async def tickers(session_id: str):
@@ -150,10 +127,6 @@ async def domains(session_id: str):
     finally:
         conn.close()
 
-
-# ---------------------------------------------------------------------------
-# Standalone execution
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

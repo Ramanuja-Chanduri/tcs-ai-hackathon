@@ -13,9 +13,6 @@ import yfinance as yf
 from src.llm_client import call_llm_with_search
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 
 def _get_company_name(ticker: str, trades: List[Dict[str, Any]]) -> str:
     """Look up the company name for a ticker from the trade data.
@@ -109,9 +106,6 @@ def _fetch_domain_trends(domain: str) -> str:
         return f"Error fetching domain trends for {domain}: {e}"
 
 
-# ---------------------------------------------------------------------------
-# Pipeline node
-# ---------------------------------------------------------------------------
 
 def fetch_enrichment_node(state: dict) -> dict:
     """LangGraph pipeline node that fetches enrichment data.

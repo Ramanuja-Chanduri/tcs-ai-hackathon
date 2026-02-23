@@ -17,10 +17,6 @@ from src.nodes.build_enrichment import build_enrichment_node
 from src.nodes.generate_summaries import generate_summaries_node
 
 
-# ---------------------------------------------------------------------------
-# Pipeline state
-# ---------------------------------------------------------------------------
-
 class PipelineState(TypedDict, total=False):
     # Input
     raw_content: bytes
@@ -56,10 +52,6 @@ class PipelineState(TypedDict, total=False):
     summaries_stored: bool
 
 
-# ---------------------------------------------------------------------------
-# Graph builder
-# ---------------------------------------------------------------------------
-
 def build_pipeline() -> StateGraph:
     """Build and compile the sequential LangGraph pipeline.
 
@@ -88,10 +80,6 @@ def build_pipeline() -> StateGraph:
 
     return graph.compile()
 
-
-# ---------------------------------------------------------------------------
-# Runner
-# ---------------------------------------------------------------------------
 
 async def run_pipeline(
     content: bytes,

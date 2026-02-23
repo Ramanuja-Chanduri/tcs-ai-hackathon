@@ -11,9 +11,6 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.tools import DuckDuckGoSearchResults
 
-# ---------------------------------------------------------------------------
-# Clients (initialised at module level, using GENAILAB_API_KEY from env)
-# ---------------------------------------------------------------------------
 
 _API_KEY = os.environ.get("GENAILAB_API_KEY")
 _BASE_URL = "https://genailab.tcs.in"
@@ -33,10 +30,6 @@ embeddings_model = OpenAIEmbeddings(
 
 search_tool = DuckDuckGoSearchResults(max_results=5)
 
-
-# ---------------------------------------------------------------------------
-# Core functions
-# ---------------------------------------------------------------------------
 
 def call_llm(prompt: str, system_prompt: Optional[str] = None) -> str:
     """Direct LLM call (no web search).
@@ -99,10 +92,6 @@ def call_llm_with_search(prompt: str) -> str:
     except Exception as e:
         return f"Error calling LLM with search: {e}"
 
-
-# ---------------------------------------------------------------------------
-# Embedding helpers (for future use)
-# ---------------------------------------------------------------------------
 
 def get_embedding(text: str) -> list:
     """Return the embedding vector for a single text string."""

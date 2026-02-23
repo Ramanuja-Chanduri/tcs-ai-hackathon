@@ -11,20 +11,12 @@ from typing import Any, Dict, List, Optional
 
 DB_PATH = "trade_summary.db"
 
-# ---------------------------------------------------------------------------
-# Connection helper
-# ---------------------------------------------------------------------------
-
 def get_db() -> sqlite3.Connection:
     """Return a new SQLite connection with Row factory enabled."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
-
-# ---------------------------------------------------------------------------
-# Schema initialisation
-# ---------------------------------------------------------------------------
 
 _SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS raw_trades (
@@ -91,10 +83,6 @@ def init_db() -> None:
     finally:
         conn.close()
 
-
-# ---------------------------------------------------------------------------
-# Store helpers
-# ---------------------------------------------------------------------------
 
 def store_trades(trades: List[Dict[str, Any]], session_id: str) -> int:
     """Insert a batch of trade dicts into raw_trades.

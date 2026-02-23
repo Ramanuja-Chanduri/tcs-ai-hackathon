@@ -28,9 +28,6 @@ def calculate_metrics_node(state: dict) -> dict:
     tickers: List[str] = state.get("tickers", [])
     domains: List[str] = state.get("domains", [])
 
-    # ------------------------------------------------------------------
-    # Overall metrics
-    # ------------------------------------------------------------------
     total_trades = len(trades)
     total_volume = sum(t.get("total_value", 0) for t in trades)
     buy_volume = sum(
@@ -70,9 +67,6 @@ def calculate_metrics_node(state: dict) -> dict:
     for name, value in overall_metrics.items():
         store_metric(session_id, name, value, category="overall")
 
-    # ------------------------------------------------------------------
-    # Per-ticker metrics
-    # ------------------------------------------------------------------
     ticker_trades: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for t in trades:
         ticker_trades[t.get("ticker", "")].append(t)
@@ -107,9 +101,6 @@ def calculate_metrics_node(state: dict) -> dict:
             reference_id=ticker,
         )
 
-    # ------------------------------------------------------------------
-    # Per-domain metrics
-    # ------------------------------------------------------------------
     domain_trades: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for t in trades:
         domain_trades[t.get("domain", "")].append(t)

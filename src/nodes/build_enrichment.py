@@ -28,9 +28,6 @@ def build_enrichment_node(state: dict) -> dict:
     domain_data: Dict[str, str] = state.get("domain_data", {})
     session_id: str = state["session_id"]
 
-    # ------------------------------------------------------------------
-    # Ticker enrichment
-    # ------------------------------------------------------------------
     ticker_enrichment: Dict[str, Dict[str, Any]] = {}
 
     all_tickers = sorted(set(list(stock_data.keys()) + list(company_data.keys())))
@@ -47,9 +44,6 @@ def build_enrichment_node(state: dict) -> dict:
             data_json=ticker_enrichment[ticker],
         )
 
-    # ------------------------------------------------------------------
-    # Domain enrichment
-    # ------------------------------------------------------------------
     # Build a mapping of domain -> tickers present in the trade data
     filtered_trades: list = state.get("filtered_trades", [])
     domain_tickers: Dict[str, List[str]] = {}
